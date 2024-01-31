@@ -1,0 +1,6 @@
+---
+- name: run mario game
+  hosts: web
+  roles:
+    - vars
+    - mario

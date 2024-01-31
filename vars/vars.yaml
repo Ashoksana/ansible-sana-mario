@@ -1,0 +1,4 @@
+- name: set variable for httpd
+  set_fact:
+    mario_server: httpd
+    server_path: /var/www/html/

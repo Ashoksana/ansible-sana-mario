@@ -1,0 +1,37 @@
+---
+- name: get variables
+  become: yes
+  include: /home/ec2-user/vars/vars.yaml
+   
+- name: install httpd and git
+  become: yes  
+  yum:
+    name:
+      - "{{ mario_server }}"
+      - git
+    state: present
+
+- name: clone the github repo mario
+  become: yes
+  git:
+    repo: https://github.com/Ashoksana/mario.git
+    dest: "{{ mario_server }}"
+
+- name: cut and paste of mario inside file into html
+  become: yes
+  command: mv /var/www/html/mario/* /var/www/html/
+  args:
+    creates: /var/www/html/
+
+- name: remove the mario inside content
+  become: yes
+  file:
+    path: "{{ server_path }}/mario/"
+    state: absent 
+
+- name: start httpd service
+  become: yes
+  service:
+    name: "{{ mario_server }}"
+    state: started
+    enabled: yes
